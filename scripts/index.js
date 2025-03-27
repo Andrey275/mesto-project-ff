@@ -21,8 +21,8 @@ function createCard(name, link, deleteCard) {
   return cardElement;
 }
 // @todo: Функция удаления карточки
-function deleteCard(card) {
-  card.remove();
+function deleteCard(cardElement) {
+  cardElement.remove();
 }
 // @todo: Вывести карточки на страницу
 initialCards.forEach(card => {
