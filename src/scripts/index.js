@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards.js';
 import { openModal, closeModal } from './modal.js';
-import { createCard, handleLike } from './card.js';
+import { createCard, handleLike, handleDelete } from './card.js';
 
 // DOM-элементы
 const content = document.querySelector('.content');
@@ -21,9 +21,9 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 
 // Элементы формы редактирования профиля
-const formElement = popupEdit.querySelector('.popup__form');
-const nameInput = formElement.querySelector('.popup__input_type_name');
-const jobInput = formElement.querySelector('.popup__input_type_description');
+const editProfileForm = popupEdit.querySelector('.popup__form');
+const nameInput = editProfileForm.querySelector('.popup__input_type_name');
+const jobInput = editProfileForm.querySelector('.popup__input_type_description');
 
 // Элементы формы добавления карточки
 const formAddCard = popupAddCard.querySelector('.popup__form');
@@ -35,7 +35,8 @@ initialCards.forEach(card => {
   const cardElement = createCard(card.name, card.link, {
     openModal,
     handleImageClick,
-    handleLike
+    handleLike,
+    handleDelete
   });
   placesList.append(cardElement);
 });
@@ -66,7 +67,7 @@ function handleEditButtonClick() {
 editButton.addEventListener('click', handleEditButtonClick);
 
 // Обработчик отправки формы
-function handleFormSubmit(evt) {
+function handleEditProfileFormSubmit(evt) {
   evt.preventDefault();
 
   profileTitle.textContent = nameInput.value;
@@ -75,7 +76,7 @@ function handleFormSubmit(evt) {
   closeModal(popupEdit);
 }
 
-formElement.addEventListener('submit', handleFormSubmit);
+editProfileForm.addEventListener('submit', handleEditProfileFormSubmit);
 
 // Обработчик добавления новой карточки
 function handleAddCardFormSubmit(evt) {
@@ -87,7 +88,8 @@ function handleAddCardFormSubmit(evt) {
   const newCard = createCard(name, link, {
     openModal,
     handleImageClick,
-    handleLike
+    handleLike,
+    handleDelete
   });  
 
   placesList.prepend(newCard);
@@ -104,4 +106,3 @@ function handleImageClick(name, link) {
   popupCaption.textContent = name;
   openModal(popupImage);
 }
-
