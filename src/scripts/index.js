@@ -2,6 +2,7 @@ import '../pages/index.css';
 import { initialCards } from './cards.js';
 import { openModal, closeModal } from './modal.js';
 import { createCard, handleLike, handleDelete } from './card.js';
+import { enableValidation, clearValidation } from "./validation.js";
 
 // DOM-элементы
 const content = document.querySelector('.content');
@@ -42,8 +43,14 @@ initialCards.forEach(card => {
 });
 
 // Обработчики открытия попапов
-editButton.addEventListener('click', () => openModal(popupEdit));
-addButton.addEventListener('click', () => openModal(popupAddCard));
+editButton.addEventListener('click', () => {
+  openModal(popupEdit);
+  clearValidation(popupEdit, validationConfig);
+});
+addButton.addEventListener('click', () => {
+  openModal(popupAddCard);
+  clearValidation(popupAddCard, validationConfig);
+});
 
 // Закрытие попапов по крестику или оверлею
 document.querySelectorAll('.popup').forEach((popup) => {
@@ -95,6 +102,8 @@ function handleAddCardFormSubmit(evt) {
   placesList.prepend(newCard);
   formAddCard.reset();
   closeModal(popupAddCard);
+  // Задаем кнопке отправки неактивное состояние
+  clearValidation(popupAddCard, validationConfig);
 }
 
 formAddCard.addEventListener('submit', handleAddCardFormSubmit);
@@ -106,3 +115,17 @@ function handleImageClick(name, link) {
   popupCaption.textContent = name;
   openModal(popupImage);
 }
+
+// ВАЛИДАЦИЯ
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
+
+// Вызовем функцию
+enableValidation(validationConfig);
