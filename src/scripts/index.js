@@ -3,6 +3,7 @@ import { initialCards } from './cards.js';
 import { openModal, closeModal } from './modal.js';
 import { createCard, handleLike, handleDelete } from './card.js';
 import { enableValidation, clearValidation } from "./validation.js";
+import { errorHandling, getUserInformation, getCards } from "./api.js";
 
 // DOM-элементы
 const content = document.querySelector('.content');
@@ -20,6 +21,7 @@ const popupCaption = popupImage.querySelector('.popup__caption');
 // DOM-элементы для профиля
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+const profileImage = document.querySelector(".profile__image");
 
 // Элементы формы редактирования профиля
 const editProfileForm = popupEdit.querySelector('.popup__form');
@@ -44,12 +46,13 @@ initialCards.forEach(card => {
 
 // Обработчики открытия попапов
 editButton.addEventListener('click', () => {
-  openModal(popupEdit);
   clearValidation(popupEdit, validationConfig);
+  openModal(popupEdit);
 });
 addButton.addEventListener('click', () => {
-  openModal(popupAddCard);
+  formAddCard.reset();
   clearValidation(popupAddCard, validationConfig);
+  openModal(popupAddCard);
 });
 
 // Закрытие попапов по крестику или оверлею
@@ -68,7 +71,6 @@ document.querySelectorAll('.popup').forEach((popup) => {
 function handleEditButtonClick() {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
-  openModal(popupEdit);
 }
 
 editButton.addEventListener('click', handleEditButtonClick);
@@ -129,3 +131,13 @@ const validationConfig = {
 
 // Вызовем функцию
 enableValidation(validationConfig);
+
+Promise.all([getUserInformation(), getCards()])
+  .then(([userRes, cardsRes]) => {
+    profileTitle.textContent = userRes.name;
+    profileDescription.textContent = userRes.about;
+    profileImage.style.backgroundImage = `url(${userRes.avatar})`
+  })
+  .catch((err) => {
+    console.log("Ошибка при загрузке данных:", err);
+  });

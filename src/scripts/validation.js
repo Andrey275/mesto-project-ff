@@ -107,7 +107,7 @@ const clearValidation = (formElement, validationConfig) => {
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
 
   // Обойдём все элементы полученной коллекции
-  inputList.forEach((inputElement, validationConfig) => {
+  inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, validationConfig);
   });
   disablePopupButton(buttonElement, validationConfig);
