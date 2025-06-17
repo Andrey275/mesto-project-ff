@@ -9,7 +9,6 @@ const errorHandling = (res) => {
   if (res.ok) {
         return res.json();
       }
-      // если ошибка, отклоняем промис
       return Promise.reject(`Ошибка: ${res.status}`);
 };
 

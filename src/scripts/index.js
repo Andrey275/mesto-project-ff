@@ -1,5 +1,4 @@
 import '../pages/index.css';
-//import { initialCards } from './cards.js';
 import { openModal, closeModal } from './modal.js';
 import { createCard, handleLike, handleDelete } from './card.js';
 import { enableValidation, clearValidation } from "./validation.js";
@@ -103,9 +102,9 @@ function handleAddCardFormSubmit(evt) {
   const name = cardNameInput.value;
   const link = cardLinkInput.value;
 
-  addCard(name, link)
+   addCard(name, link)
     .then((cardData) => {
-      const newCard = createCard(cardData, {
+      const newCard = createCard(cardData, userId, {
         openModal,
         handleImageClick,
         handleLike,
@@ -187,9 +186,11 @@ const validationConfig = {
 
 enableValidation(validationConfig);
 
+let userId;
+
 Promise.all([getUserInformation(), getCards()])
   .then(([userRes, cardsRes]) => {
-    const userId = userRes._id;
+    userId = userRes._id;
 
     profileTitle.textContent = userRes.name;
     profileDescription.textContent = userRes.about;

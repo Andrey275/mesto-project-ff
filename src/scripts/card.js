@@ -16,7 +16,7 @@ function createCard(cardData, userId, { handleLike, handleImageClick, handleDele
 
   const deleteButton = cardElement.querySelector('.card__delete-button');
 
-  // Показываем корзину только если карточка принадлежит пользователю
+  // Показываем корзину если карточка принадлежит пользователю
   if (cardData.owner._id === userId) {
     deleteButton.addEventListener('click', () => {
       handleDelete(cardData._id, cardElement);
