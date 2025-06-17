@@ -37,8 +37,11 @@ const avatarPopup = document.querySelector('.popup_type_new-avatar');
 const avatarForm = avatarPopup.querySelector('.popup__form');
 const avatarInput = avatarForm.querySelector('#avatar-input');
 
+let userId;
+
 // Обработчики открытия попапов
 editButton.addEventListener('click', () => {
+  handleEditButtonClick();
   clearValidation(popupEdit, validationConfig);
   openModal(popupEdit);
 });
@@ -50,7 +53,7 @@ addButton.addEventListener('click', () => {
 
 // Закрытие попапов по крестику или оверлею
 document.querySelectorAll('.popup').forEach((popup) => {
-  popup.addEventListener('click', (event) => {
+  popup.addEventListener('mousedown', (event) => {
     if (
       event.target.classList.contains('popup__close') ||
       event.target.classList.contains('popup')
@@ -65,8 +68,6 @@ function handleEditButtonClick() {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
 }
-
-editButton.addEventListener('click', handleEditButtonClick);
 
 // Обработчик отправки формы профиля
 function handleEditProfileFormSubmit(evt) {
@@ -114,7 +115,6 @@ function handleAddCardFormSubmit(evt) {
       placesList.prepend(newCard);
       formAddCard.reset();
       closeModal(popupAddCard);
-      clearValidation(popupAddCard, validationConfig);
     })
     .catch((err) => {
       console.log('Ошибка при добавлении карточки:', err);
@@ -186,7 +186,6 @@ const validationConfig = {
 
 enableValidation(validationConfig);
 
-let userId;
 
 Promise.all([getUserInformation(), getCards()])
   .then(([userRes, cardsRes]) => {
