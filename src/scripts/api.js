@@ -27,5 +27,63 @@ const getCards = () => {
     .then(errorHandling);
 };
 
+const updateUserInfo = (name, about) => {
+  return fetch(`${baseUrlConfig}/users/me`, {
+    method: 'PATCH',
+    headers: headersConfig,
+    body: JSON.stringify({
+      name,
+      about
+    })
+  }).then(errorHandling);
+};
 
-export { errorHandling, getUserInformation, getCards };
+const addCard = (name, link) => {
+  return fetch(`${baseUrlConfig}/cards`, {
+    method: 'POST',
+    headers: headersConfig,
+    body: JSON.stringify({
+      name,
+      link
+    })
+  }).then(errorHandling);
+};
+
+const deleteCardFromServer = (cardId) => {
+  return fetch(`${baseUrlConfig}/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: headersConfig
+  })
+  .then(errorHandling);
+};
+
+const likeCard = (cardId) => {
+  return fetch(`${baseUrlConfig}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: headersConfig
+  })
+  .then(errorHandling);
+};
+
+const dislikeCard = (cardId) => {
+  return fetch(`${baseUrlConfig}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: headersConfig
+  })
+  .then(errorHandling);
+};
+
+const updateAvatar = (avatarUrl) => {
+  return fetch(`${baseUrlConfig}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: headersConfig,
+    body: JSON.stringify({ avatar: avatarUrl })
+  })
+  .then(errorHandling);
+};
+
+
+export { getUserInformation, getCards, 
+  updateUserInfo, addCard, deleteCardFromServer, 
+  likeCard, dislikeCard, updateAvatar
+ };
